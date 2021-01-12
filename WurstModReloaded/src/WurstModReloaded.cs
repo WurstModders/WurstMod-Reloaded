@@ -21,9 +21,10 @@ namespace WurstModReloaded
             Logger.LogInfo($"WurstMod Reloaded {Source.Info.Version} is awake! (H3VR Build ID: {Constants.BuildId})");
         }
 
-        private static void DeliOnRuntimeComplete()
+        private void DeliOnRuntimeComplete()
         {
-            
+            // Some debug info
+            Logger.LogInfo($"{LevelLoader.Levels.Count} custom levels found!");
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace WurstModReloaded
 {
-    internal class Constants
+    internal static class Constants
     {
         static Constants()
         {
@@ -14,7 +14,6 @@ namespace WurstModReloaded
         }
         
         // Static readonly values
-        public const int SteamAppId = 450540;
         public static readonly long BuildId;
         
         // Filenames
