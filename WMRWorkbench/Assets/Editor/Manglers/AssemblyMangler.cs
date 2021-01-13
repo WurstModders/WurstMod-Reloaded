@@ -14,7 +14,7 @@ namespace WurstMod.Manglers
             if (string.IsNullOrEmpty(pathToExe)) return;
 
             string path = Path.GetDirectoryName(pathToExe) + "/h3vr_Data/Managed/";
-            MangleUnityAssemblies(path);
+            MangleBuiltAssemblies(path);
             //MangleUnityAssemblies("F:/Games/Steam/steamapps/common/H3VR/h3vr_Data/Managed/");
         }
 
@@ -22,7 +22,7 @@ namespace WurstMod.Manglers
         /// <summary>
         /// Hack a built Unity assembly to allow it to be loaded directly into the Editor as a plugin.
         /// </summary>
-        public static void MangleUnityAssemblies(string pathToManaged)
+        public static void MangleBuiltAssemblies(string pathToManaged)
         {
             // We must use a custom assembly resolver to successfully process the DLLs.
             ReaderParameters readerParams = new ReaderParameters
@@ -72,17 +72,15 @@ namespace WurstMod.Manglers
         /// Hack the Editor assembly located in Library/ScriptAssemblies to be loadable by the game.
         /// This method will place the modified dll into the AssetBundles folder.
         /// </summary>
-        /// <param name="name">Name for the level or asset</param>
-        public static void MangleEditorAssembly(string name)
+        /// <param name="filename">Properly-formatted name (usually obtained via ManglerExtensions.GetProcessedFilename())</param>
+        public static void MangleEditorAssembly(string filename)
         {
             if (!File.Exists(Constants.EditorAssemblyPath + Constants.NameMainAssembly + ".dll")) return;
 
-            string dllName = ManglerExtensions.GetProcessedFilename(name.ToLower()); // ToLower because assetbundles go lowercase anyway.
-
             // Module name needs to be changed away from Assembly-CSharp.dll because it is a reserved name.
             AssemblyDefinition asm = AssemblyDefinition.ReadAssembly(Constants.EditorAssemblyPath + Constants.NameMainAssembly + ".dll");
-            asm.Name = new AssemblyNameDefinition(dllName, new Version(1, 0, 0, 0));
-            asm.MainModule.Name = dllName + ".dll";
+            asm.Name = new AssemblyNameDefinition(filename, new Version(1, 0, 0, 0));
+            asm.MainModule.Name = filename + ".dll";
 
             // References to renamed unity code must be swapped out.
             foreach(var ii in asm.MainModule.AssemblyReferences)
@@ -92,7 +90,7 @@ namespace WurstMod.Manglers
             }
 
             // Save it into /AssetBundles.
-            asm.Write(Constants.BundleOutputPath + dllName + ".dll");
+            asm.Write(Constants.BundleOutputPath + filename + ".dll");
         }
     }
 }

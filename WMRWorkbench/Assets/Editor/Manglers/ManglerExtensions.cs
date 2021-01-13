@@ -44,7 +44,7 @@ namespace WurstMod.Manglers
             {
                 processed = processed.PadRight(Constants.NameMainAssembly.Length, '_');
             }
-            return processed;
+            return processed.ToLower();
         }
     }
 }
