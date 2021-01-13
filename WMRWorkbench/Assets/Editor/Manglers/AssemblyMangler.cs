@@ -7,18 +7,6 @@ namespace WurstMod.Manglers
 {
     public static class AssemblyMangler
     {
-        [MenuItem("DEBUG/Test Assembly Mangle + Import")]
-        public static void TestMangle()
-        {
-            string pathToExe = EditorUtility.OpenFilePanel("Locate h3vr.exe", "", "exe");
-            if (string.IsNullOrEmpty(pathToExe)) return;
-
-            string path = Path.GetDirectoryName(pathToExe) + "/h3vr_Data/Managed/";
-            MangleBuiltAssemblies(path);
-            //MangleUnityAssemblies("F:/Games/Steam/steamapps/common/H3VR/h3vr_Data/Managed/");
-        }
-
-
         /// <summary>
         /// Hack a built Unity assembly to allow it to be loaded directly into the Editor as a plugin.
         /// </summary>

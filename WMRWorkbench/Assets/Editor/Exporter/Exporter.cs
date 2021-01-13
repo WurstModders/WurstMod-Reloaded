@@ -10,7 +10,7 @@ namespace WurstMod.Exporter
     class Exporter
     {
         [MenuItem("DEBUG/Test Export Scene")]
-        public static void TestExport()
+        public static void Export()
         {
             ExportScene(SceneManager.GetActiveScene());
         }
