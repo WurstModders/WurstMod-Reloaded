@@ -79,7 +79,7 @@ namespace WurstMod.Manglers
 
             // Module name needs to be changed away from Assembly-CSharp.dll because it is a reserved name.
             AssemblyDefinition asm = AssemblyDefinition.ReadAssembly(Constants.EditorAssemblyPath + Constants.NameMainAssembly + ".dll");
-            asm.Name = new AssemblyNameDefinition(filename, new Version(1, 0, 0, 0));
+            asm.Name = new AssemblyNameDefinition(filename, asm.Name.Version);
             asm.MainModule.Name = filename + ".dll";
 
             // References to renamed unity code must be swapped out.
