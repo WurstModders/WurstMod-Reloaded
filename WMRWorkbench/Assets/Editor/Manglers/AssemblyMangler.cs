@@ -28,6 +28,7 @@ namespace WurstMod.Manglers
             asm.MainModule.Name = Constants.RenameFirstPass + ".dll";
             asm.Write(pathToManaged + Constants.RenameFirstPass + ".dll");
             asm.Write(Constants.UnityCodePluginPath + Constants.RenameFirstPass + ".dll");
+            asm.Dispose();
 
 
             // PART 2: Main assembly
@@ -41,7 +42,7 @@ namespace WurstMod.Manglers
                 if (ii.Name == Constants.NameFirstPass) ii.Name = Constants.RenameFirstPass;
             }
             asm.Write(Constants.UnityCodePluginPath + Constants.RenameMainAssembly + ".dll");
-            File.Delete(pathToManaged + Constants.RenameFirstPass + ".dll");
+            asm.Dispose();
 
 
             // PART 3: References
@@ -52,8 +53,11 @@ namespace WurstMod.Manglers
             foreach (string file in files) File.Copy(pathToManaged + file, Constants.UnityCodePluginPath + file, true);
 
 
-            // Finally, kick the asset database to tell it to process the new files.
+            // Kick the asset database to tell it to process the new files.
             AssetDatabase.Refresh();
+
+            // Delete files we no longer need.
+            File.Delete(pathToManaged + Constants.RenameFirstPass + ".dll");
         }
 
         /// <summary>

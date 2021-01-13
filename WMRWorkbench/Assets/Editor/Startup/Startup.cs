@@ -30,7 +30,7 @@ namespace WurstMod.Startup
 
         private static void SetupDefines()
         {
-            
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "H3VR_IMPORTED");
         }
     }
 }

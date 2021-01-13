@@ -1,0 +1,3 @@
+[filter "defines"]
+	clean = sed '/H3VR_IMPORTED$/d'
+	smudge = cat
