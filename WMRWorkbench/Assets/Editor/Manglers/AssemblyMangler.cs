@@ -38,6 +38,7 @@ namespace WurstMod.Manglers
             AssemblyDefinition asm = AssemblyDefinition.ReadAssembly(pathToManaged + Constants.NameFirstPass + ".dll", readerParams);
             asm.Name = new AssemblyNameDefinition(Constants.RenameFirstPass, new Version(1, 0, 0, 0));
             asm.MainModule.Name = Constants.RenameFirstPass + ".dll";
+            asm.Write(pathToManaged + Constants.RenameFirstPass + ".dll");
             asm.Write(Constants.UnityCodePluginPath + Constants.RenameFirstPass + ".dll");
 
 
@@ -52,6 +53,7 @@ namespace WurstMod.Manglers
                 if (ii.Name == Constants.NameFirstPass) ii.Name = Constants.RenameFirstPass;
             }
             asm.Write(Constants.UnityCodePluginPath + Constants.RenameMainAssembly + ".dll");
+            File.Delete(pathToManaged + Constants.RenameFirstPass + ".dll");
 
 
             // PART 3: References
