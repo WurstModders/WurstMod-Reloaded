@@ -12,5 +12,10 @@
         public const string BundleOutputPath = "AssetBundles/";
 
         public const string BundleExtension = ".bundle";
+
+        public const string H3VRManifestFilename = "appmanifest_450540.acf";
+        public const string PathToManifest = "../../" + H3VRManifestFilename;
+        public const string H3VRCachedLocationFile = "H3Location.txt";
+        
     }
 }

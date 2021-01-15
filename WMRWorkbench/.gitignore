@@ -11,6 +11,9 @@
 /[Uu]ser[Ss]ettings/
 /[Aa]sset[Bb]undles/
 
+# H3VR folder cache file
+H3Location.txt
+
 # Binaries from H3VR are copied into here, don't commit them!
 [Uu]nity[Cc]ode/
 

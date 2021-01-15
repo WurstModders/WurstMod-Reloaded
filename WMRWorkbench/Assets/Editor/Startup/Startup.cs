@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using UnityEngine;
 using UnityEditor;
 
 namespace WurstMod.Startup
@@ -11,12 +12,16 @@ namespace WurstMod.Startup
             string path = FindManagedPath();
             bool success = MangleAndImport(path);
             if (success) SetupDefines();
+            else Debug.LogError("H3 Import failed!");
         }
 
         private static string FindManagedPath()
         {
-            string pathToExe = EditorUtility.OpenFilePanel("Locate h3vr.exe", "", "exe");
+            string directory = H3PathHelper.FindPath();
+            string pathToExe = EditorUtility.OpenFilePanel("Locate h3vr.exe", directory, "exe");
             if (string.IsNullOrEmpty(pathToExe)) return "";
+           
+            H3PathHelper.WriteCache(Path.GetDirectoryName(pathToExe) + '\\');
             return Path.GetDirectoryName(pathToExe) + "/h3vr_Data/Managed/";
         }
 
