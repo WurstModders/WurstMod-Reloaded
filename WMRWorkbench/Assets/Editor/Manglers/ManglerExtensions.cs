@@ -14,14 +14,14 @@ namespace WurstMod.Manglers
             List<T> match = toMatch.ToList();
             List<int> ret = new List<int>();
 
-            for (int ii = 0; ii < list.Count(); ii++)
+            for (int ii = 0; ii < list.Count; ii++)
             {
                 if (list[ii].Equals(match[0]))
                 {
-                    for (int jj = 0; jj < match.Count(); jj++)
+                    for (int jj = 0; jj < match.Count; jj++)
                     {
                         if (!list[ii + jj].Equals(match[jj])) break;
-                        if (jj == match.Count() - 1) ret.Add(ii);
+                        if (jj == match.Count - 1) ret.Add(ii);
                     }
                 }
             }
@@ -35,15 +35,8 @@ namespace WurstMod.Manglers
         /// </summary>
         public static string GetProcessedFilename(string str)
         {
-            string processed = str;
-            if (processed.Length > Constants.NameMainAssembly.Length)
-            {
-                processed = processed.Substring(0, Constants.NameMainAssembly.Length);
-            }
-            else
-            {
-                processed = processed.PadRight(Constants.NameMainAssembly.Length, '_');
-            }
+            // Either shorten or extend the filename so it is equal to the main assembly's length
+            var processed = str.Length > Constants.NameMainAssembly.Length ? str.Substring(0, Constants.NameMainAssembly.Length) : str.PadRight(Constants.NameMainAssembly.Length, '_');
             return processed.ToLower();
         }
     }

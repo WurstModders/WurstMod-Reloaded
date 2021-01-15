@@ -12,7 +12,10 @@ namespace WurstModReloaded
         [JsonProperty] public string Name { get; set; }
         [JsonProperty] public string Description { get; set; }
         [JsonProperty] public string Author { get; set; }
+        [JsonProperty] public string Gamemode { get; set; }
+        [JsonProperty] public int LevelRevision { get; set; }
         [JsonProperty] public int GameBuildId { get; set; }
+        [JsonProperty] public int ExporterVersion { get; set; }
 
         // Deli filled data
         public Mod Source { get; set; }

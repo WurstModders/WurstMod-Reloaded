@@ -2,95 +2,78 @@
 using System.IO;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace WurstMod.Exporter
 {
-    class Exporter
+    static class Exporter
     {
         [MenuItem("DEBUG/Test Export Scene")]
         public static void Export()
         {
-            ExportScene(SceneManager.GetActiveScene());
+            // Force the user to save before continuing.
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            
+            // Make sure the scene has an export settings object beside it
+            var scene = SceneManager.GetActiveScene();
+            var dir = Path.GetDirectoryName(scene.path) ?? "";
+            var settingsLoc = Path.Combine(dir, scene.name + "_exportsettings.asset");
+            var settings = AssetDatabase.LoadAssetAtPath<LevelExportSettings>(settingsLoc);
+
+            if (settings == null)
+            {
+                var empty = ScriptableObject.CreateInstance<LevelExportSettings>();
+                AssetDatabase.CreateAsset(empty, settingsLoc);
+                EditorUtility.DisplayDialog("Export failed", "You have not yet setup the scene's export settings. A file has been created for it beside your scene, please fill it out and then try again.", "Ok");
+                return;
+            }
+            
+            // Call the export method
+            ExportScene(scene);
         }
-
-
-        private static Scene scene;
-        private static string filename;
-        private static List<string> mangled;
 
         public static void ExportScene(Scene toExport)
         {
+            List<string> mangled = null;
             try
             {
-                scene = toExport;
-                filename = Manglers.ManglerExtensions.GetProcessedFilename(scene.name);
+                var filename = Manglers.ManglerExtensions.GetProcessedFilename(toExport.name);
 
                 // Make sure all directories we need exist.
-                SetupDirs();
+                if (!Directory.Exists(Constants.BundleOutputPath)) Directory.CreateDirectory(Constants.BundleOutputPath);
 
                 // Mangle the editor assembly and place it in the output folder.
-                MangleEditorAssembly();
+                Manglers.AssemblyMangler.MangleEditorAssembly(filename);
 
                 // Mangle scripts written in editor so bundle sets them up to be loaded by the game.
-                MangleScripts();
-
-                // Clean out old files.
-                PreClean();
+                mangled = Manglers.ScriptMangler.MangleEditorScripts(filename);
 
                 // Create the actual bundle file.
-                ExportBundle();
+                ExportBundle(filename, toExport);
 
                 // Clean out files we don't care about.
-                PostClean();
-
-                // Return scripts written in editor to usable state.
-                DemangleScripts();
+                PostClean(filename);
 
                 // Mangle the bundle so H3VR scripts load in-game.
-                MangleBundle();
+                Manglers.BundleMangler.MangleBundle(Constants.BundleOutputPath + filename + Constants.BundleExtension);
+                
+                // Log a message so the user knows we completed successfully.
+                Debug.Log("Export finished! Asset bundle location: " + Constants.BundleOutputPath + filename + Constants.BundleExtension);
             }
             catch (Exception e)
             {
-                // If something goes wrong, make sure scripts are not mangled!
-                DemangleScripts();
-                Debug.LogError("Failed to export scene");
-                Debug.LogError(e);
+                Debug.LogError(new Exception("Failed to export scene", e));
+            }
+            // If the try finishes or we caught an error, return scripts to the state used in the editor
+            finally
+            {
+                if (mangled != null) Manglers.ScriptMangler.DemangleEditorScripts(mangled);
             }
         }
 
-        private static void SetupDirs()
-        {
-            if (!Directory.Exists(Constants.BundleOutputPath)) Directory.CreateDirectory(Constants.BundleOutputPath);
-        }
-
-        private static void MangleEditorAssembly()
-        {
-            Manglers.AssemblyMangler.MangleEditorAssembly(filename);
-        }
-
-        private static void MangleScripts()
-        {
-            mangled = Manglers.ScriptMangler.MangleEditorScripts(filename);
-        }
-
-        private static void DemangleScripts()
-        {
-            Manglers.ScriptMangler.DemangleEditorScripts(mangled);
-        }
-
-        private static void PreClean()
-        {
-            string fullPath = Constants.BundleOutputPath + filename + Constants.BundleExtension;
-
-            if (File.Exists(fullPath)) File.Delete(fullPath);
-            if (File.Exists(fullPath + ".manifest")) File.Delete(fullPath + ".manifest");
-            if (File.Exists(Constants.BundleOutputPath + "AssetBundles")) File.Delete(Constants.BundleOutputPath + "AssetBundles");
-            if (File.Exists(Constants.BundleOutputPath + "AssetBundles.manifest")) File.Delete(Constants.BundleOutputPath + "AssetBundles.manifest");
-        }
-
-        private static void PostClean()
+        private static void PostClean(string filename)
         {
             string fullPath = Constants.BundleOutputPath + filename + Constants.BundleExtension;
 
@@ -99,7 +82,7 @@ namespace WurstMod.Exporter
             if (File.Exists(Constants.BundleOutputPath + "AssetBundles.manifest")) File.Delete(Constants.BundleOutputPath + "AssetBundles.manifest");
         }
 
-        private static void ExportBundle()
+        private static void ExportBundle(string filename, Scene scene)
         {
             // WARNING: Compression is a problem for BundleMangler. Do not change this until
             // there is a fix. Or just don't fix it, Deli mods are compressed anyway, right?
@@ -108,11 +91,6 @@ namespace WurstMod.Exporter
             build.assetBundleName = filename + Constants.BundleExtension;
             build.assetNames = new[] { scene.path };
             BuildPipeline.BuildAssetBundles(Constants.BundleOutputPath, new[] { build }, buildOptions, BuildTarget.StandaloneWindows64);
-        }
-
-        private static void MangleBundle()
-        {
-            Manglers.BundleMangler.MangleBundle(Constants.BundleOutputPath + filename + Constants.BundleExtension);
         }
     }
 }

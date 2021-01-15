@@ -9,7 +9,7 @@ namespace WurstModReloaded
     [QuickNamedBind("WMR.Level")]
     public class LevelLoader : IAssetLoader
     {
-        internal static List<LevelInfo> Levels = new();
+        internal static readonly List<LevelInfo> Levels = new();
         
         public void LoadAsset(IServiceKernel kernel, Mod mod, string path)
         {
@@ -20,7 +20,7 @@ namespace WurstModReloaded
             var loc = Path.Combine(path, Constants.LevelInfoFilename);
             if (!mod.Resources.Get<string>(loc).MatchSome(out var str))
             {
-                mod.Logger.LogWarning($"Level {path} is missing level info file. Skipping...");
+                WurstModReloaded.Instance.Logger.LogWarning($"Level {mod.Info.Guid}:{path} is missing level info file. Skipping...");
             }
 
             // Now we have the info file we can populate it with other values
@@ -28,8 +28,16 @@ namespace WurstModReloaded
             info.Source = mod;
             info.LevelPath = path;
             
+            // If the level was created with a newer version of the game, output a warning and skip
+            if (info.GameBuildId > Constants.BuildId)
+            {
+                WurstModReloaded.Instance.Logger.LogWarning($"Level {mod.Info.Guid}:{path} was built against a newer version of the game. Skipping...");
+                return;
+            }
+            
             // Add it to our list
             Levels.Add(info);
+            WurstModReloaded.Instance.Logger.LogDebug($"Level {mod.Info.Guid}:{path} was loaded!");
         }
     }
 }
