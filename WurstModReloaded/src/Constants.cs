@@ -15,10 +15,8 @@ namespace WurstModReloaded
         
         // Static readonly values
         public static readonly long BuildId;
-        
-        // Filenames
-        public const string AssetBundleFilename = "leveldata";
-        public const string LevelInfoFilename = "info.json";
-        public const string ThumbnailFilename = "thumb.png";
+
+        // Reserved object names
+        public const string CameraRigSpawn = "[CameraRig]";
     }
 }

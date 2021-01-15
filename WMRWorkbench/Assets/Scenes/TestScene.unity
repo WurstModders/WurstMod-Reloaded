@@ -108,6 +108,100 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &831095762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 831095764}
+  - component: {fileID: 831095763}
+  m_Layer: 0
+  m_Name: '[SceneSettings_CustomScene]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &831095763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 831095762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1592627621, guid: 1bc6fcf04d9a2de40b40bd9a60645a28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsSpawnLockingEnabled: 1
+  AreHitboxesEnabled: 1
+  DoesDamageGetRegistered: 1
+  MaxPointingDistance: 20
+  MaxProjectileRange: 500
+  ForcesCasingDespawn: 0
+  IsLocoTeleportAllowed: 1
+  IsLocoSlideAllowed: 1
+  IsLocoDashAllowed: 1
+  IsLocoTouchpadAllowed: 1
+  IsLocoArmSwingerAllowed: 1
+  DoesTeleportUseCooldown: 0
+  DoesAllowAirControl: 0
+  UsesMaxSpeedClamp: 0
+  MaxSpeedClamp: 3
+  UsesPlayerCatcher: 1
+  CatchHeight: -50
+  DefaultPlayerIFF: -3
+  DoesPlayerRespawnOnDeath: 1
+  PlayerDeathFade: 3
+  PlayerRespawnLoadDelay: 3.5
+  SceneToLoadOnDeath: 
+  DoesUseHealthBar: 1
+  IsQuickbeltSwappingAllowed: 1
+  AreQuickbeltSlotsEnabled: 1
+  ConfigQuickbeltOnLoad: 0
+  QuickbeltToConfig: 0
+  IsSceneLowLight: 0
+  IsAmmoInfinite: 1
+  AllowsInfiniteAmmoMags: 1
+  UsesUnlockSystem: 0
+  DeathResetPoint: {fileID: 1496520435}
+  OnDeathSendMessageTarget: {fileID: 0}
+  OneDeathSendMessage: 
+  ShotEventReceivers: []
+  HowManyToShotReceivePerFrame: 10
+  QuitReceivers: []
+  DefaultSoundEnvironment: 17
+  BaseLoudness: 5
+  UsesWeaponHandlingAISound: 1
+  MaxImpactSoundEventDistance: 15
+  Vol_AO: {fileID: 0}
+  Vol_Bloom: {fileID: 0}
+  Vol_CC: {fileID: 0}
+  Post_SnakeEyes: []
+  Post_MoleEye: []
+  Post_Blort: []
+  Post_Dlort: []
+  Post_FarOutMan: []
+  Post_BadTrip: []
+  PowerupPoint_HomeTown: {fileID: 0}
+  PowerupPoint_InverseHomeTown: {fileID: 0}
+  PowerPoints_WheredIGo_TP: []
+  PowerPoints_WheredIGo_Grav: []
+--- !u!4 &831095764
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 831095762}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1461102125
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +215,7 @@ GameObject:
   - component: {fileID: 1461102128}
   - component: {fileID: 1461102126}
   - component: {fileID: 1461102127}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: TestCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,4 +308,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1496520434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1496520435}
+  m_Layer: 0
+  m_Name: '[CameraRig]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1496520435
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1496520434}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.35, y: 1.5, z: 18.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

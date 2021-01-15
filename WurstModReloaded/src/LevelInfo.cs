@@ -14,6 +14,8 @@ namespace WurstModReloaded
         [JsonProperty] public string Author { get; set; }
         [JsonProperty] public string Gamemode { get; set; }
         [JsonProperty] public int LevelRevision { get; set; }
+        [JsonProperty] public string AssetBundlePath { get; set; }
+        [JsonProperty] public string ThumbnailPath { get; set; }
         [JsonProperty] public int GameBuildId { get; set; }
         [JsonProperty] public int ExporterVersion { get; set; }
 
@@ -29,7 +31,7 @@ namespace WurstModReloaded
             get
             {
                 if (!_assetBundle)
-                    _assetBundle = Source.Resources.Get<AssetBundle>(Path.Combine(LevelPath, Constants.AssetBundleFilename)).Expect("Could not find asset bundle for level");
+                    _assetBundle = Source.Resources.Get<AssetBundle>(Path.Combine(LevelPath, AssetBundlePath)).Expect("Could not find asset bundle for level");
                 return _assetBundle;
             }
         }
@@ -38,7 +40,7 @@ namespace WurstModReloaded
             get
             {
                 if (!_thumbnail)
-                    _thumbnail = Source.Resources.Get<Texture2D>(Path.Combine(LevelPath, Constants.ThumbnailFilename)).UnwrapOr(null);
+                    _thumbnail = Source.Resources.Get<Texture2D>(Path.Combine(LevelPath, ThumbnailPath)).UnwrapOr(null);
                 return _thumbnail;
             }
         }

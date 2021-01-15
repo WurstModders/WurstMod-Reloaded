@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
     <LangVersion>9</LangVersion>
+    <DebugType>Full</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Deli.Runtime" Version="0.2.5" />
