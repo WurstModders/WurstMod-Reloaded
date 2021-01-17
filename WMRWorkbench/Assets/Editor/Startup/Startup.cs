@@ -18,8 +18,11 @@ namespace WurstMod.Startup
         private static string FindManagedPath()
         {
             string directory = H3PathHelper.FindPath();
-            string pathToExe = EditorUtility.OpenFilePanel("Locate h3vr.exe", directory, "exe");
-            if (string.IsNullOrEmpty(pathToExe)) return "";
+            string pathToExe = Path.Combine(directory, "h3vr.exe");
+            if (!File.Exists(pathToExe))
+            {
+                pathToExe = EditorUtility.OpenFilePanel("Locate h3vr.exe", directory, "exe");
+            }
            
             H3PathHelper.WriteCache(Path.GetDirectoryName(pathToExe) + '\\');
             return Path.GetDirectoryName(pathToExe) + "/h3vr_Data/Managed/";

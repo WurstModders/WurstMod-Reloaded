@@ -15,12 +15,20 @@ namespace WurstMod.Exporter
         {
             // Force the user to save before continuing.
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-            
+
             // Make sure the scene has an export settings object beside it
             var scene = SceneManager.GetActiveScene();
             var dir = Path.GetDirectoryName(scene.path) ?? "";
             var settingsLoc = Path.Combine(dir, scene.name + "_exportsettings.asset");
             var settings = AssetDatabase.LoadAssetAtPath<LevelExportSettings>(settingsLoc);
+            
+            // Get the build ID of H3. TODO: Cache this when the assemblies are imported
+            var buildId = BuildIDHelper.GetBuildID();
+            if (!buildId.HasValue)
+            {
+                EditorUtility.DisplayDialog("Export failed", "Could not determine the build id of H3VR", "Ok");
+                return;
+            }
 
             if (settings == null)
             {
@@ -30,11 +38,19 @@ namespace WurstMod.Exporter
                 return;
             }
             
+            // Make sure the settings are valid
+            if (!settings.IsValid())
+            {
+                EditorUtility.DisplayDialog("Export failed", "One or more fields on the export settings object are invalid. Check the debug console for more details.", "Ok");
+                return;
+            }
+            
             // Call the export method
-            ExportScene(scene);
+            var filename = ExportScene(scene);
+            WriteExtras(settings, filename, buildId.Value);
         }
 
-        public static void ExportScene(Scene toExport)
+        public static string ExportScene(Scene toExport)
         {
             List<string> mangled = null;
             try
@@ -58,9 +74,11 @@ namespace WurstMod.Exporter
 
                 // Mangle the bundle so H3VR scripts load in-game.
                 Manglers.BundleMangler.MangleBundle(Constants.BundleOutputPath + filename + Constants.BundleExtension);
-                
+
                 // Log a message so the user knows we completed successfully.
                 Debug.Log("Export finished! Asset bundle location: " + Constants.BundleOutputPath + filename + Constants.BundleExtension);
+
+                return filename;
             }
             catch (Exception e)
             {
@@ -71,6 +89,8 @@ namespace WurstMod.Exporter
             {
                 if (mangled != null) Manglers.ScriptMangler.DemangleEditorScripts(mangled);
             }
+
+            return null;
         }
 
         private static void PostClean(string filename)
@@ -86,11 +106,17 @@ namespace WurstMod.Exporter
         {
             // WARNING: Compression is a problem for BundleMangler. Do not change this until
             // there is a fix. Or just don't fix it, Deli mods are compressed anyway, right?
-            var buildOptions = BuildAssetBundleOptions.UncompressedAssetBundle; 
+            var buildOptions = BuildAssetBundleOptions.UncompressedAssetBundle;
             var build = default(AssetBundleBuild);
             build.assetBundleName = filename + Constants.BundleExtension;
-            build.assetNames = new[] { scene.path };
-            BuildPipeline.BuildAssetBundles(Constants.BundleOutputPath, new[] { build }, buildOptions, BuildTarget.StandaloneWindows64);
+            build.assetNames = new[] {scene.path};
+            BuildPipeline.BuildAssetBundles(Constants.BundleOutputPath, new[] {build}, buildOptions, BuildTarget.StandaloneWindows64);
+        }
+
+        private static void WriteExtras(LevelExportSettings settings, string filename, int buildId)
+        {
+            File.WriteAllText(Path.Combine(Constants.BundleOutputPath, "info.json"), settings.GetLevelInfoString(filename, buildId));
+            if (settings.Thumbnail) File.WriteAllBytes(Path.Combine(Constants.BundleOutputPath, filename + ".png"), settings.Thumbnail.EncodeToPNG());
         }
     }
 }

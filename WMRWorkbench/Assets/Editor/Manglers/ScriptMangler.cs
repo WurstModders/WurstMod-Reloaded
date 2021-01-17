@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,13 +28,13 @@ namespace WurstMod.Manglers
             foreach (string path in AssetDatabase.GetAllAssetPaths().Where(x => x.EndsWith(".cs")))
             {
                 MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
-                if (script != null && script.GetClass().Assembly.GetName().Name == Constants.NameMainAssembly)
-                {
-                    toRestore.Add(path);
+                if (script == null) continue;
+                var @class = script.GetClass();
+                if (@class == null || @class.Assembly.GetName().Name != Constants.NameMainAssembly) continue;
+                toRestore.Add(path);
 
-                    // internal extern void Init(string scriptContents, string className, string nameSpace, string assemblyName, bool isEditorScript);
-                    monoScriptInit.Invoke(script, new object[] { script.text, script.name, script.GetClass().Namespace, dllName + ".dll", false });
-                }
+                // internal extern void Init(string scriptContents, string className, string nameSpace, string assemblyName, bool isEditorScript);
+                monoScriptInit.Invoke(script, new object[] { script.text, script.name, script.GetClass().Namespace, dllName + ".dll", false });
             }
 
             return toRestore;

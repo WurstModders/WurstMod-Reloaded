@@ -9,7 +9,7 @@ namespace WurstMod.Exporter
     public static class BuildIDHelper
     {
         public static Regex buildIdMatch = new Regex(@"""buildid""\s+""(.*?)""");
-        public static string GetBuildID()
+        public static int? GetBuildID()
         {
             string fullPathToManifest = Startup.H3PathHelper.FindPath() + Constants.PathToManifest;
             if (File.Exists(fullPathToManifest))
@@ -19,12 +19,12 @@ namespace WurstMod.Exporter
                 Match match = buildIdMatch.Match(manifest);
                 if (match.Success)
                 {
-                    return match.Groups[1].ToString();
+                    return int.Parse(match.Groups[1].ToString());
                 }
             }
 
             Debug.LogError("Couldn't find BuildID! Is your H3VR installed outside of steam or pirated?");
-            return "";
+            return null;
         }
     }
 }
