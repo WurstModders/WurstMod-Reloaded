@@ -7,6 +7,12 @@
         public const string NameFirstPass =   "Assembly-CSharp-firstpass";
         public const string RenameFirstPass = "H3VRCode-CSharp-passfirst";
 
+        public static readonly string[] StripTypes =
+        {
+            "MaterialMapChannelPackerDefinition",
+            "Alloy.PackedMapDefinition"
+        };
+        
         public const string UnityCodePluginPath = "Assets/Plugins/UnityCode/";
         public const string EditorAssemblyPath = "Library/ScriptAssemblies/";
         public const string BundleOutputPath = "AssetBundles/";

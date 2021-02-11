@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEditor;
 using Mono.Cecil;
+using UnityEngine;
 
 namespace WurstMod.Manglers
 {
@@ -41,6 +42,18 @@ namespace WurstMod.Manglers
             {
                 if (ii.Name == Constants.NameFirstPass) ii.Name = Constants.RenameFirstPass;
             }
+            
+            // Remove any classes we need to
+            foreach (var typeStr in Constants.StripTypes)
+            {
+                var type = asm.MainModule.GetType(typeStr);
+                if (type != null)
+                {
+                    Debug.Log("Stripping type: " + type.FullName);
+                    asm.MainModule.Types.Remove(type);
+                } else Debug.Log("Unable to find type: " + typeStr);
+            }
+            
             asm.Write(Constants.UnityCodePluginPath + Constants.RenameMainAssembly + ".dll");
             asm.Dispose();
 

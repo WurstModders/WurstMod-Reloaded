@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
-using Valve.Newtonsoft.Json.Linq;
 
+#if H3VR_DEFINED
+using Valve.Newtonsoft.Json.Linq;
+#endif
 namespace WurstMod
 {
     public class LevelExportSettings : ScriptableObject
@@ -20,7 +22,7 @@ namespace WurstMod
 
         [Tooltip("The image that will show up with your level")]
         public Texture2D Thumbnail;
-        
+
         [Tooltip("This is the version number of your level. Increment it when you make a change.")]
         public int Revision;
 
@@ -42,16 +44,19 @@ namespace WurstMod
                 Debug.LogError("Export Settings: Name field cannot be empty");
                 valid = false;
             }
+
             if (string.IsNullOrEmpty(Author))
             {
                 Debug.LogError("Export Settings: Author field cannot be empty");
                 valid = false;
             }
+
             if (string.IsNullOrEmpty(Gamemode))
             {
                 Debug.LogError("Export Settings: Gamemode field cannot be empty");
                 valid = false;
             }
+
             if (Revision < 0)
             {
                 Debug.LogError("Export Settings: Revision must be positive");
@@ -77,6 +82,7 @@ namespace WurstMod
 
         public string GetLevelInfoString(string sceneName, int buildId)
         {
+#if H3VR_DEFINED
             var jObject = new JObject();
             jObject["Name"] = Name;
             jObject["Description"] = Description;
@@ -88,6 +94,9 @@ namespace WurstMod
             jObject["GameBuildId"] = buildId;
             jObject["ExporterVersion"] = Constants.ExporterVersion;
             return jObject.ToString();
+#else
+            return "";
+#endif
         }
     }
 }
