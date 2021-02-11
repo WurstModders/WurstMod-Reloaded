@@ -7,6 +7,7 @@
         public const string NameFirstPass =   "Assembly-CSharp-firstpass";
         public const string RenameFirstPass = "H3VRCode-CSharp-passfirst";
 
+        // List of types to remove from the main assembly so that when we import the same thing later in the editor there are no conflicts
         public static readonly string[] StripTypes =
         {
             "MaterialMapChannelPackerDefinition",
