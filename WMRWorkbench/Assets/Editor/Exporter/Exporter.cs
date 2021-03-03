@@ -10,7 +10,7 @@ namespace WurstMod.Exporter
 {
     static class Exporter
     {
-        [MenuItem("DEBUG/Test Export Scene")]
+        [MenuItem("WurstMod/Export Scene")]
         public static void Export()
         {
             // Force the user to save before continuing.

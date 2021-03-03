@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 namespace WurstMod.Manglers
 {
@@ -31,6 +33,14 @@ namespace WurstMod.Manglers
 
             // Finally, just write the file back.
             File.WriteAllBytes(path, bytes);
+        }
+
+        [MenuItem("WurstMod/Bundle Mangle Utility")]
+        public static void MangleSelected()
+        {
+            var file = EditorUtility.OpenFilePanel("Select an asset bundle", string.Empty, string.Empty);
+            MangleBundle(file);
+            Debug.Log("Done!");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace WurstMod.Startup
 {
     public static class Startup
     {
-        [MenuItem("DEBUG/Import H3VR Code")]
+        [MenuItem("WurstMod/Import H3VR Code")]
         public static void Import()
         {
             string path = FindManagedPath();
