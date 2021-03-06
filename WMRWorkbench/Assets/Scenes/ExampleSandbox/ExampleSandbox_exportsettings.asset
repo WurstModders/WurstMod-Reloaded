@@ -9,14 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 286b4734163247e6a2e4a3666a849546, type: 3}
-  m_Name: TestScene_exportsettings
+  m_Name: ExampleSandbox_exportsettings
   m_EditorClassIdentifier: 
   Name: Test Scene
   Description: This is a test scene for various things!
-  Author: Koba, Nathan
+  Author: Nathan
   Gamemode: sandbox
-  Thumbnail: {fileID: 2800000, guid: 42ee46ad147371a41b99573d2683de85, type: 3}
+  Thumbnail: {fileID: 2800000, guid: d494ad2d7602ee949a7449974b7a8205, type: 3}
   Revision: 0
-  AutoPackDeliMod: 1
+  AutoPackDeliMod: 0
   SourceUrl: 
   ModVersion: 0.1.0.0
