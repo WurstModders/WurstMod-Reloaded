@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-#if H3VR_DEFINED
+#if H3VR_IMPORTED
 using Valve.Newtonsoft.Json.Linq;
 #endif
 namespace WurstMod
@@ -63,26 +63,12 @@ namespace WurstMod
                 valid = false;
             }
 
-            // Deli stuff.
-            if (AutoPackDeliMod)
-            {
-                try
-                {
-                    new Version(ModVersion);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError("Export Settings: Deli mod version is invalid.");
-                    valid = false;
-                }
-            }
-
             return valid;
         }
 
         public string GetLevelInfoString(string sceneName, int buildId)
         {
-#if H3VR_DEFINED
+#if H3VR_IMPORTED
             var jObject = new JObject();
             jObject["Name"] = Name;
             jObject["Description"] = Description;

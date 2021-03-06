@@ -15,7 +15,7 @@ MonoBehaviour:
   Description: This is a test scene for various things!
   Author: Koba, Nathan
   Gamemode: sandbox
-  Thumbnail: {fileID: 2800000, guid: f071d308b3a78a84385224c09079ee3d, type: 3}
+  Thumbnail: {fileID: 2800000, guid: 42ee46ad147371a41b99573d2683de85, type: 3}
   Revision: 0
   AutoPackDeliMod: 1
   SourceUrl: 
